@@ -1,0 +1,21 @@
+body {
+  background-color: #f5f7fb;
+  color: #212529;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.card {
+  border: 0;
+  border-radius: 8px;
+}
+
+.table th {
+  white-space: nowrap;
+}
+
+.btn {
+  min-width: 72px;
+}
