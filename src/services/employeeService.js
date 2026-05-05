@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { sampleEmployees } from '../data/sampleEmployees'
 
-const API_URL = import.meta.env.VITE_API_BASE_URL
+const API_URL = import.meta.env.VITE_API_BASE_URL?.trim().replace(/\/$/, '')
 const STORAGE_KEY = 'employee-management-system-employees'
 
 function loadLocalEmployees() {
@@ -24,6 +24,7 @@ function createLocalId() {
 }
 
 export const usingMockApi = Boolean(API_URL)
+export const apiModeLabel = usingMockApi ? 'MockAPI Connected' : 'Sample Data Mode'
 
 export async function getEmployees() {
   if (API_URL) {

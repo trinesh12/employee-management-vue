@@ -60,10 +60,10 @@ import EmployeeForm from './components/EmployeeForm.vue'
 import EmployeeTable from './components/EmployeeTable.vue'
 import {
   addEmployee,
+  apiModeLabel,
   deleteEmployee,
   getEmployees,
   updateEmployee,
-  usingMockApi
 } from './services/employeeService'
 
 export default {
@@ -85,7 +85,7 @@ export default {
   },
   computed: {
     apiLabel() {
-      return usingMockApi ? 'MockAPI Connected' : 'Sample Data Mode'
+      return apiModeLabel
     }
   },
   mounted() {
@@ -106,18 +106,15 @@ export default {
     async saveEmployee(employee) {
       try {
         if (this.selectedEmployee) {
-          const updatedEmployee = await updateEmployee(this.selectedEmployee.id, employee)
-          this.employees = this.employees.map((item) =>
-            item.id === updatedEmployee.id ? updatedEmployee : item
-          )
+          await updateEmployee(this.selectedEmployee.id, employee)
           this.showMessage('Employee updated successfully.', 'success')
         } else {
-          const newEmployee = await addEmployee(employee)
-          this.employees = [...this.employees, newEmployee]
+          await addEmployee(employee)
           this.showMessage('Employee added successfully.', 'success')
         }
 
         this.selectedEmployee = null
+        await this.fetchEmployees()
       } catch (error) {
         this.showMessage('Unable to save employee. Please try again.', 'error')
       }
@@ -135,7 +132,7 @@ export default {
 
       try {
         await deleteEmployee(id)
-        this.employees = this.employees.filter((employee) => employee.id !== id)
+        await this.fetchEmployees()
         this.showMessage('Employee deleted successfully.', 'success')
       } catch (error) {
         this.showMessage('Unable to delete employee. Please try again.', 'error')
